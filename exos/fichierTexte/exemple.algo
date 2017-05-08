@@ -1,0 +1,107 @@
+-- Laetitia Monnier --
+ALGO : FichierTexte
+BUT : Crée un fichier si celui est inexistant, et rajoute des informations par la suite.
+ENTREE : Les informations necessaires.
+SORTIE : Affichage du fichier.
+
+TYPE 
+	client = ENREGISTREMENT
+		nom : CHAINE
+		prenom : CHAINE
+		adresse : CHAINE
+		cp : CHAINE
+		ville : CHAINE
+FINENREGISTREMENT
+
+PROCEDURE renseignement(var XClient : client; var f : Texte)
+debut 
+	ECRIRE('Entrez votre nom.')
+	LIRE(XClient.nom)
+	XClient.nom <- upCase(XClient.nom)
+	ECRIRE(f,XClient.nom)
+	ECRIRE('Entrez votre prenom.')
+	LIRE(XClient.prenom)
+	XClient.prenom <- upCase(XClient.prenom)
+	ECRIRE(f,XClient.prenom)
+	ECRIRE('Entrez votre adresse.')
+	LIRE(XClient.adresse)
+	ECRIRE(f,XClient.adresse)
+	ECRIRE('Entrez votre code postal.')
+	LIRE(XClient.cp)
+	XClient.cp <- copy(XClient.cp,1,5)
+	ECRIRE(f,XClient.cp)
+	ECRIRE('Entrez le nom de votre ville.')
+	LIRE(XClient.ville)
+	XClient.ville <- upCase(XClient.ville)
+	ECRIRE(f,XClient.ville)
+	ECRIRE(f,' ')
+FINPROCEDURE
+
+PROCEDURE modifier(var XClient : client; var f : Texte)
+debut
+	AJOUTER(f)
+	SI IOResult <> 0 ALORS
+		REECRIRE(f)
+	FINSI
+	renseignement(XClient, f)
+	FERMER(f)
+FINPROCEDURE
+
+PROCEDURE menu()
+debut 
+	ECRIRE('-- Fiche de Renseignement Client --')
+ 	ECRIRE('1 : Inscription.')
+ 	ECRIRE('2 : Afficher la liste renseignement client.')
+ 	ECRIRE('0 : Sortir !')
+FINPROCEDURE
+
+PROCEDURE affichage(var f : Texte)
+VAR
+	s : CHAINE
+debut
+	Reset(f)
+	SI PAS OUVRIR(f) ALORS
+		ECRIRE('Une erreur s''est produite avec le fichier.')
+	SINON
+		TANTQUE NON Eof(f) FAIRE
+			LIRE(f,s)
+			ECRIRE(s)
+		FINTANTQUE
+		FERMER(f)
+	FINSI 
+FINPROCEDURE
+
+PROCEDURE effaceEcran()
+VAR
+	compteur : ENTIER
+debut
+	GOTOXY(1, 5)
+	POUR compteur DE 1 A 12 FAIRE
+		ECRIRE('                             ')
+	GOTOXY(1, 5)
+FINPROCEDURE
+
+Programme Principal
+
+VAR
+	XClient : client
+	f : Texte
+	choix : ENTIER
+
+DEBUT
+	Ajoutez un clrscr ici.
+	ASSIGNER(f, 'FicheClient.txt')
+	menu()
+    REPETER
+	    LIRE(choix)
+	    SI choix = 1 ALORS
+	    	modifier(XClient, f)
+		FINSI
+		effaceEcran()
+	JUSQUA (choix = 2) OR (choix = 0)
+	SI choix = 2 ALORS
+		affichage(f)
+	SINON SI choix = 0 ALORS
+		ECRIRE('Exit')
+	FINSI
+FIN

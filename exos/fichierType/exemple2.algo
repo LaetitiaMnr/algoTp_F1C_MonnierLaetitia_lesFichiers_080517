@@ -1,0 +1,26 @@
+-- Laetitia Monnier --
+CONST
+	MAX = 3
+
+VAR
+	f : file of integer
+	score, compteur : ENTIER
+	resultat : tableau [1..MAX] de ENTIER
+
+DEBUT
+	ASSIGNER(f, 'score.txt')
+	OUVRIR(f)
+	ECRIRE('Entrez votre score / 000 pour sortir')
+	REPETER
+		LIRE(score)
+		ECRIRE(f, score)
+		GOTOXY(1,2)
+		ECRIRE('               ')
+		GOTOXY(1,2)
+	JUSQU'A score = 000
+	PositionCourante(f,0)
+	LectureBloc(f, resultat, MAX)
+	POUR compteur DE 1 A MAX FAIRE
+		ECRIRE(resultat[compteur])
+	FERMER(f)
+FIN
